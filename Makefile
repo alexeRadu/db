@@ -1,19 +1,29 @@
-TARGET := bd
+TARGET  := bd
+BUILDIR := build
 
-$(TARGET): database.o table.o main.o
-	g++ main.o database.o -o $(TARGET)
+SRCS := $(wildcard *.cpp)
+OBJS := $(SRCS:%.cpp=$(BUILDIR)/%.o)
 
-main.o: main.cpp database.h
-	g++ -c main.cpp -o main.o
+all: $(TARGET)
 
-database.o: database.cpp table.h database.h
-	g++ -c database.cpp -o database.o
+$(TARGET): $(OBJS)
+	@echo "[LD] $@"
+	@$(CXX) $^ -o $@
 
-table.o: table.cpp table.h
-	g++ -c table.cpp -o table.o
+$(BUILDIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@echo "[CC] $<"
+	@$(CXX) -c $< -o $@
 
+db:
+	-@bear --output $(BUILDIR)/compile_commands.json -- make
 
 .PHONY: clean
 clean:
-	rm -rf *.o
-	rm -rf bd
+	@for file in $(OBJS) $(TARGET); do	\
+		if [ -f $${file} ]; then		\
+			echo "[RM] $${file}";		\
+			rm $${file};				\
+		fi								\
+	done
+	@rm -Rf $(BUILDIR)
