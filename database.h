@@ -1,4 +1,5 @@
 #include <map>
+#include <string>
 #include "table.h"
 
 class Database {
@@ -11,5 +12,5 @@ public:
 private:
     int create_table(const char *cmdline);
 
-    std::map<std::string, Table> tables;
+    std::map<std::string, Table *> tables;
 };
