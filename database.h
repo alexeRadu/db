@@ -7,10 +7,8 @@ public:
     Database() {};
     ~Database() {};
 
-    int parse(const char *cmdline);
+    int parse(char *cmdline);
 
 private:
-    int create_table(const char *cmdline);
-
     std::map<std::string, Table *> tables;
 };

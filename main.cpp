@@ -1,19 +1,18 @@
 #include <iostream>
+#include <string>
 #include "database.h"
-
-#define MAX_CMD_LINE    100
 
 int main(int argc, char *argv[])
 {
     Database db;
-    char cmdline[MAX_CMD_LINE];
+    std::string cmdline;
     int exit = 0;
 
     while (!exit) {
         std::cout << "> ";
-        std::cin >> cmdline;
+        std::getline(std::cin, cmdline);
 
-        exit = db.parse(cmdline);
+        exit = db.parse((char *)cmdline.c_str());
     }
 
     return 0;
