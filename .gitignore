@@ -1,3 +1,4 @@
 .clangd
 *.o
+mydb
 compile_commands.json
