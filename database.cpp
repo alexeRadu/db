@@ -2,8 +2,18 @@
 #include <iostream>
 #include "database.h"
 
-int Database::parse(const char *cmdline)
+static char *skip_whitespaces(char *s)
 {
+    while (*s == ' '  || *s == '\t' || *s == '\n')
+        s++;
+
+    return s;
+}
+
+static void next_token(char *s, char *token)
+{
+}
+
     if (!strcmp(cmdline, "exit")) {
         return 1;
     } else if (!strcmp(cmdline, "create table")) {
