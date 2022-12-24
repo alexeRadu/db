@@ -1,4 +1,4 @@
-TARGET  := bd
+TARGET  := mydb
 BUILDIR := build
 
 SRCS := $(wildcard *.cpp)
