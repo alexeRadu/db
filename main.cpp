@@ -2,6 +2,8 @@
 #include <string>
 #include "database.h"
 
+using namespace std;
+
 int main(int argc, char *argv[])
 {
     Database db;
@@ -9,10 +11,10 @@ int main(int argc, char *argv[])
     int exit = 0;
 
     while (!exit) {
-        std::cout << "> ";
-        std::getline(std::cin, cmdline);
+        cout << "> ";
+        getline(cin, cmdline);
 
-        exit = db.parse((char *)cmdline.c_str());
+        exit = db.parse(cmdline);
     }
 
     return 0;

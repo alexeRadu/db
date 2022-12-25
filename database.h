@@ -2,13 +2,15 @@
 #include <string>
 #include "table.h"
 
+using namespace std;
+
 class Database {
 public:
     Database() {};
     ~Database() {};
 
-    int parse(char *cmdline);
+    int parse(string &cmdline);
 
 private:
-    std::map<std::string, Table *> tables;
+    map<string, Table *> tables;
 };

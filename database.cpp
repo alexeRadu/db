@@ -2,28 +2,27 @@
 #include <iostream>
 #include "database.h"
 
-static char *skip_whitespaces(char *s)
-{
-    while (*s == ' '  || *s == '\t' || *s == '\n')
-        s++;
-
-    return s;
-}
-
-static char *next_token(char *s, char *token)
+static void skip_whitespaces(string &s)
 {
     size_t n = 0;
 
-    while (s[n] != '\0' && s[n] != ' ' && s[n] != '\t' && s[n] != '\n')
+    while (s[n] == ' '  || s[n] == '\t' || s[n] == '\n')
         n++;
 
-    memcpy(token, s, n);
-    token[n] = '\0'; 
-
-    return skip_whitespaces(s + n);
+    s.erase(0, n);
 }
 
-static char *str_toupper(char *s)
+static void next_token(string &s, string &token)
+{
+    size_t n;
+    skip_whitespaces(s);
+
+    n = s.find_first_of(" \t\n");
+    token = s.substr(0, n);
+    s.erase(0, n);
+}
+
+static void str_toupper(string &s)
 {
     size_t n = 0;
 
@@ -31,38 +30,37 @@ static char *str_toupper(char *s)
         s[n] = toupper(s[n]);
         n++;
     }
-
-    return s;
 }
 
-int Database::parse(char *cmdline)
+int Database::parse(string &cmdline)
 {
-    char token[126];
+    string token;
 
-    cmdline = skip_whitespaces(cmdline);
-    cmdline = next_token(cmdline, token);
+    next_token(cmdline, token);
 
-    if (!strcmp(token, "exit")) {
+    if (token == "exit") {
         return 1;
-    } else if (!strcmp(token, "create")) {
-        cmdline = next_token(cmdline, token);
+    } else if (token == "create") {
+        next_token(cmdline, token);
 
-        if (strcmp(token, "table")) {
-            std::cout << "Unknown command 'CREATE " << str_toupper(token) << "'" << std::endl;
+        if (token != "table") {
+            str_toupper(token);
+            cout << "Unknown command 'CREATE " << token << "'" << endl;
             return 0;
         }
 
-        cmdline = next_token(cmdline, token);
-        if (strlen(token) == 0) {
-            std::cout << "Provide a name for the table" << std::endl;
+        next_token(cmdline, token);
+        if (token.length() == 0) {
+            cout << "Provide a name for the table" << endl;
+            return 0;
         }
 
-        std::cout << "CREATE TABLE " << str_toupper(token) << std::endl;
+        cout << "CREATE TABLE " << token << endl;
 
-        tables[cmdline] = new Table(token);
-    } else if (!strcmp(token, "drop")) {
+    //     tables[cmdline] = new Table(token);
+    } else if (token == "drop") {
         std::cout << "DROP TABLE" << std::endl;
-    } else if (!strcmp(token, "display table")) {
+    } else if (token == "display table") {
         std::cout << "DISPLAY TABLE" << std::endl;
     } else {
         std::cout << "Unknown comman" << std::endl;
