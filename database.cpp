@@ -22,47 +22,52 @@ static void next_token(string &s, string &token)
     s.erase(0, n);
 }
 
-static void str_toupper(string &s)
-{
-    size_t n = 0;
-
-    while (s[n]) {
-        s[n] = toupper(s[n]);
-        n++;
-    }
-}
-
-int Database::parse(string &cmdline)
+static void get_command(string &cmdline, string &command)
 {
     string token;
 
     next_token(cmdline, token);
 
     if (token == "exit") {
+        command = token;
+    } else if (token == "create" || token == "drop" || token == "display") {
+        command = token;
+
+        next_token(cmdline, token);
+        command += " " + token;
+    } else {
+        command = "";
+    }
+}
+
+int Database::parse(string &cmdline)
+{
+    string cmd;
+
+    get_command(cmdline, cmd);
+
+    if (cmd == "exit") {
         return 1;
-    } else if (token == "create") {
-        next_token(cmdline, token);
+    } else if (cmd == "create table") {
+        string name;
 
-        if (token != "table") {
-            str_toupper(token);
-            cout << "Unknown command 'CREATE " << token << "'" << endl;
-            return 0;
-        }
-
-        next_token(cmdline, token);
-        if (token.length() == 0) {
+        next_token(cmdline, name);
+        if (name.length() == 0) {
             cout << "Provide a name for the table" << endl;
             return 0;
         }
 
-        cout << "CREATE TABLE " << token << endl;
+        cout << "CREATE TABLE " << name << endl;
 
     //     tables[cmdline] = new Table(token);
-    } else if (token == "drop") {
+    } else if (cmd == "drop table") {
+
         std::cout << "DROP TABLE" << std::endl;
-    } else if (token == "display table") {
+    } else if (cmd == "display table") {
+
         std::cout << "DISPLAY TABLE" << std::endl;
     } else {
+
         std::cout << "Unknown comman" << std::endl;
     }
 
