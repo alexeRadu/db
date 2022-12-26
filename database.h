@@ -1,3 +1,6 @@
+#ifndef DATABASE_H
+#define DATABASE_H
+
 #include <map>
 #include <string>
 #include "table.h"
@@ -14,3 +17,5 @@ public:
 private:
     map<string, Table *> tables;
 };
+
+#endif /* DATABASE_H */
