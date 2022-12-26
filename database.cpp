@@ -154,6 +154,14 @@ int Database::parse(string &cmdline)
             return 0;
         }
 
+        if (name == "*") {
+            cout << "Tables: " << endl;
+            for (auto & [tname, tbl] : tables) {
+                cout << "- " << tname << endl;
+            }
+            return 0;
+        }
+
         for (auto & [tname, tbl] : tables) {
             if (tname == name) {
                 table = tbl;
