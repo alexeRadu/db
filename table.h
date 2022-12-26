@@ -13,6 +13,8 @@ public:
     Table(string &name, vector<tuple<string, string>> &args);
     ~Table() {};
 
+    void display();
+
 private:
     string name;
     vector<ColumnGeneric *> columns;

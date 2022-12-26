@@ -132,15 +132,43 @@ int Database::parse(string &cmdline)
         if (parse_arglist(arglist, args))
             return 0;
 
-        tables[cmdline] = new Table(name, args);
+        tables[name] = new Table(name, args);
+
+        cout << "Table '" << name << "' created" << endl;
     } else if (cmd == "drop table") {
 
         std::cout << "DROP TABLE" << std::endl;
     } else if (cmd == "display table") {
+        string name;
+        Table *table;
+        bool found = false;
+
         if (tables.size() == 0) {
-            cout << "No tables available";
+            cout << "No tables available" << endl;
             return 0;
         }
+
+        next_token(cmdline, name, " \t\n");
+        if (name.length() == 0) {
+            cout << "Please provide table name" << endl;
+            return 0;
+        }
+
+        for (auto & [tname, tbl] : tables) {
+            if (tname == name) {
+                table = tbl;
+                found = true;
+                break;
+            }
+        }
+
+        if (not found) {
+            cout << "No table with the name '" << name << "' found" << endl;
+            return 0;
+        }
+
+        table->display();
+
     } else {
 
         std::cout << "Unknown comman" << std::endl;

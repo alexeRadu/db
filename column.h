@@ -13,6 +13,8 @@ public:
     string& get_name() { return name; }
     string& get_type() { return type; }
 
+    void display();
+
 private:
     string name;
     string type;
